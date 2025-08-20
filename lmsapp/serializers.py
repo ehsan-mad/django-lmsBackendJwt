@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 
 from rest_framework import serializers
 
-from .models import Profile
+from .models import Profile , Teacher, Student, Course, Enrollment, Lesson, Assignment,Submission
 
 class RegisterSerializer(serializers.ModelSerializer):
     phone = serializers.CharField(required=True, write_only=True)
@@ -28,3 +28,39 @@ class RegisterSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     phone = serializers.CharField(required=True)
     password = serializers.CharField(required=True, write_only=True)
+    
+    
+class TeacherSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Teacher
+        fields = ['id', 'name', 'subject', 'email', 'is_active']
+        
+class StudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = ['id', 'name', 'email', 'enrollment_date', 'is_active', 'roll_number']
+
+class CourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = ['title', 'description', 'teacher']
+        
+class EnrollmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Enrollment
+        fields = ['student', 'course', 'enrollment_date']
+
+class LessonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lesson
+        fields = ['title', 'description', 'course']
+        
+class AssignmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Assignment
+        fields = ['title', 'description', 'course','lesson', 'due_date']
+        
+class SubmissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Submission
+        fields = ['assignment', 'student', 'submitted_at', 'content']
